@@ -1,0 +1,19 @@
+{
+  "name": "ratings-reviews",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "spec": "node --experimental-strip-types scripts/gen-spec.mts > docs/openapi.json"
+  },
+  "devDependencies": {
+    "wrangler": "^4",
+    "@cloudflare/workers-types": "^4",
+    "typescript": "^5"
+  },
+  "allowScripts": {
+    "workerd@1.20261104.1": true,
+    "esbuild@0.28.2": true
+  }
+}

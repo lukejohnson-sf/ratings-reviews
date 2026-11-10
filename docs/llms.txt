@@ -1,0 +1,36 @@
+# Ratings & Reviews API
+
+> Product ratings, 5-to-1 star distributions, review dimensions (fit/comfort/quality) and shopper-submitted reviews, keyed by the merchant's own product IDs. JSON REST.
+
+Base URL: https://ratings-reviews.luke-johnson-c65.workers.dev
+Auth: header `x-api-key: <key>` on every /v1 request. Server-to-server only; never expose the key in a browser.
+OpenAPI 3 spec: https://lukejohnson-sf.github.io/ratings-reviews/openapi.json
+
+## Endpoints
+- GET /v1/products/{productId}/summary -> Summary
+- GET /v1/products/{productId}/reviews?sort=newest|oldest|highest|lowest&rating=1-5&limit=10(max 50)&offset=0 -> {productId, summary: Summary, reviews: Review[], paging:{sort,limit,offset,returned,totalAvailable}}
+- POST /v1/products/{productId}/reviews SubmitReview -> 201 {review: Review, summary: Summary}; duplicate submissionId -> 200 {review, duplicate:true}; 422 VALIDATION_FAILED {error:{details:{field:message}}}
+- GET /v1/summaries?productIds=A,B,C (max 50) -> {summaries:[{productId, averageRating, totalReviews}]}  (for PLP tiles)
+- GET /v1/form-config -> {dimensions: Dimension[], suggestedTopics: string[], rules}  (drive the write-a-review form from this)
+
+Summary = {productId, averageRating (1 decimal), totalReviews, recommendedPercent, ratingDistribution:[{stars:5..1, count, percent}], dimensions:[{id, label, type: "scale"|"rating", minLabel, midLabel|null, maxLabel, average 1-5|null}], summaryText (uses **bold** markers)}
+- type "scale": 3 is ideal (e.g. fit Small / True to Size / Large) - place a marker at (average-1)/4.
+- type "rating": higher is better (Poor..Excellent) - fill to average/5.
+
+Review = {id, productId, rating 1-5, title, body, author, location|null, verifiedPurchase, dimensions:{fit?,comfort?,quality?: 1-5}, createdAt ISO, source: "seed"|"submitted"}
+
+SubmitReview = {rating:int 1-5 (req), title: 1-50 chars (req), body: 50-2000 chars (req), author: 1-40 chars (req), location?: <=40, dimensions: {fit:1-5 (req), comfort:1-5 (req), quality?:1-5}, customerId? (sets verifiedPurchase), submissionId? (idempotency key)}
+
+Dimension (form-config) = {id, label (form question), displayLabel (summary heading), type, minLabel, midLabel?, maxLabel, required}
+
+## Errors
+{"error":{"code","message","details?"}}. 400 BAD_REQUEST, 401 UNAUTHORIZED, 404 NOT_FOUND, 422 VALIDATION_FAILED, 503 SERVICE_UNAVAILABLE (retry with backoff; hide the reviews block rather than failing the page).
+
+## Sandbox
+Any productId returns deterministic sample data (distribution + 4 reviews). Submitted reviews persist immediately (strongly consistent). ?chaos=slow|error|flaky or x-chaos header simulates failures. POST /v1/reset deletes all submitted reviews.
+
+## Salesforce B2C Commerce pattern
+1. Business Manager HTTP service `reviews.http` (base URL + API key credential).
+2. Custom SCAPI endpoints: GET proxies summary/reviews; POST validates the shopper, sets customerId, forwards via dw.svc.LocalServiceRegistry.
+3. Storefront Next PDP loader streams the reviews call; write-a-review dialog posts via an action and renders fields from /v1/form-config.
+4. Optional: award loyalty points per review.

@@ -1,0 +1,14 @@
+name = "ratings-reviews"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+account_id = "c65b7354552db9e7940d08d8a7eede07"
+workers_dev = true
+preview_urls = false
+
+[[durable_objects.bindings]]
+name = "STORE"
+class_name = "ReviewStore"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ReviewStore"]

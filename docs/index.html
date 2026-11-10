@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ratings & Reviews Developer Docs</title>
+<meta name="description" content="Add product ratings, star distributions and shopper reviews to any storefront." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink:#14161f; --muted:#5d6475; --line:#e6e8ef; --bg:#fafbfd; --brand:#0f766e; --brand-soft:#e6f6f4; --code:#0f1220; --ok:#0e9f6e; --warn:#c2410c; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.65 Inter,system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+  a { color:var(--brand); text-decoration:none; } a:hover { text-decoration:underline; }
+  header { position:sticky; top:0; z-index:5; background:#fff; border-bottom:1px solid var(--line); }
+  .bar { max-width:1180px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:28px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px; color:var(--ink); }
+  .logo i { width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg,#0f766e,#14b8a6); display:grid; place-items:center; color:#fff; font-style:normal; font-size:15px; }
+  .bar nav { display:flex; gap:22px; font-size:14px; } .bar nav a { color:var(--muted); } .bar nav a.on { color:var(--ink); font-weight:600; }
+  .pill { margin-left:auto; font-size:12px; padding:4px 10px; border-radius:99px; background:#e7f8f1; color:var(--ok); font-weight:600; }
+  .wrap { max-width:1180px; margin:0 auto; display:grid; grid-template-columns:220px 1fr; gap:48px; padding:0 24px; }
+  aside { position:sticky; top:70px; align-self:start; padding:32px 0; font-size:14px; }
+  aside h4 { margin:18px 0 6px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  aside a { display:block; padding:4px 0; color:var(--ink); }
+  main { padding:40px 0 120px; min-width:0; }
+  .hero { background:linear-gradient(135deg,#062b2a,#0f5f59 60%,#14907f); color:#fff; border-radius:18px; padding:40px 44px; margin-bottom:40px; }
+  .hero h1 { margin:0 0 8px; font-size:34px; letter-spacing:-.02em; } .hero p { margin:0; color:#fff; opacity:.85; max-width:620px; font-size:16px; }
+  .hero .ctas { margin-top:22px; display:flex; gap:12px; }
+  .btn { display:inline-block; padding:10px 16px; border-radius:10px; font-weight:600; font-size:14px; }
+  .btn.p { background:#fff; color:#0f5f59; } .btn.s { border:1px solid rgba(255,255,255,.4); color:#fff; }
+  h2 { font-size:24px; letter-spacing:-.01em; margin:56px 0 12px; padding-top:8px; }
+  h3 { font-size:17px; margin:28px 0 8px; }
+  p, li { color:#2c3140; }
+  code { font:13px 'JetBrains Mono',monospace; background:var(--brand-soft); color:#0b5d56; padding:1px 6px; border-radius:5px; }
+  pre { background:var(--code); color:#e4e7f2; padding:18px 20px; border-radius:12px; overflow:auto; font:13px/1.6 'JetBrains Mono',monospace; }
+  pre code { background:none; color:inherit; padding:0; }
+  .c { color:#7f88a8; } .k { color:#c4a5ff; } .s { color:#9fe0b8; }
+  table { width:100%; border-collapse:collapse; font-size:14px; margin:12px 0; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  th, td { text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:#f4f5f9; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .m { font:600 11px 'JetBrains Mono',monospace; padding:2px 7px; border-radius:5px; }
+  .get { background:#e3f2ff; color:#0b63b6; } .post { background:#e7f8f1; color:#0a7a52; }
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px; }
+  .card b { display:block; margin-bottom:4px; } .card span { color:var(--muted); font-size:14px; }
+  .note { background:#fff8eb; border:1px solid #f6dfb0; border-radius:12px; padding:14px 18px; font-size:14px; }
+  .agent { background:var(--brand-soft); border:1px solid #bfe6e0; border-radius:12px; padding:16px 20px; }
+  @media (max-width:900px){ .wrap{grid-template-columns:1fr} aside{display:none} .cards{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="logo" href="#"><i>★</i>Ratings &amp; Reviews <span style="font-weight:500;color:var(--muted)">Developers</span></a>
+  <nav><a class="on" href="#">Guides</a><a href="reference.html">API Reference</a><a href="openapi.json">OpenAPI</a><a href="llms.txt">llms.txt</a></nav>
+  <span class="pill">● API operational</span>
+</div></header>
+<div class="wrap">
+<aside>
+  <h4>Get started</h4><a href="#overview">Overview</a><a href="#auth">Authentication</a><a href="#quickstart">Quickstart</a>
+  <h4>Display</h4><a href="#summary">Rating summary</a><a href="#list">Listing reviews</a><a href="#tiles">Stars on product tiles</a>
+  <h4>Collect</h4><a href="#form">Form config</a><a href="#submit">Submitting a review</a><a href="#errors">Errors</a>
+  <h4>Integrate</h4><a href="#commerce">B2C Commerce pattern</a><a href="#agents">Building with an AI agent</a><a href="#testing">Testing &amp; chaos</a>
+</aside>
+<main>
+  <section class="hero">
+    <h1>Social proof on every product.</h1>
+    <p>Ratings, star breakdowns, fit and quality insights, and shopper-written reviews, all from one REST API keyed by your product IDs.</p>
+    <div class="ctas"><a class="btn p" href="#quickstart">Quickstart</a><a class="btn s" href="reference.html">API Reference →</a></div>
+  </section>
+
+  <h2 id="overview">Overview</h2>
+  <div class="cards">
+    <div class="card"><b>Summarize</b><span>Average rating, review count and the 5-to-1 star breakdown.</span></div>
+    <div class="card"><b>Display</b><span>Sorted, filterable, paginated reviews for the product page.</span></div>
+    <div class="card"><b>Collect</b><span>Shopper submissions with validation and fit/quality dimensions.</span></div>
+  </div>
+  <p><b>Base URL:</b> <code>https://ratings-reviews.luke-johnson-c65.workers.dev</code> &nbsp;·&nbsp; JSON &nbsp;·&nbsp; Version <code>v1</code> &nbsp;·&nbsp; Products are keyed by <b>your</b> product ID, so no catalog sync is needed.</p>
+
+  <h2 id="auth">Authentication</h2>
+  <p>Send your key in the <code>x-api-key</code> header on every <code>/v1</code> request. <b>Call from your server only</b>, never from the browser.</p>
+<pre><code>x-api-key: rr_••••••••••••••••</code></pre>
+
+  <h2 id="quickstart">Quickstart</h2>
+<pre><code><span class="c"># Reviews and summary for a product's page</span>
+curl "$BASE/v1/products/P-1001/reviews?sort=highest&amp;limit=4" -H "x-api-key: $KEY"
+
+<span class="c"># Submit a review</span>
+curl -X POST $BASE/v1/products/P-1001/reviews -H "x-api-key: $KEY" -H 'content-type: application/json' -d '{
+  "rating": 5, "title": "Love these! Cute and a deal",
+  "body": "Great quality, good price for the set, and they still look new after many washes.",
+  "author": "Jennifer", "location": "Delaware",
+  "dimensions": { "fit": 3, "comfort": 5, "quality": 5 },
+  "submissionId": "basket-123-P-1001"
+}'</code></pre>
+
+  <h2 id="summary">Rating summary</h2>
+  <p><code>GET /v1/products/{productId}/summary</code> returns everything needed for the ratings snapshot block:</p>
+<pre><code>{
+  <span class="k">"averageRating"</span>: 4.6, <span class="k">"totalReviews"</span>: 2696, <span class="k">"recommendedPercent"</span>: 90,
+  <span class="k">"ratingDistribution"</span>: [ { <span class="k">"stars"</span>: 5, <span class="k">"count"</span>: 2024, <span class="k">"percent"</span>: 75 }, … ],
+  <span class="k">"dimensions"</span>: [
+    { <span class="k">"id"</span>: <span class="s">"fit"</span>, <span class="k">"label"</span>: <span class="s">"Size &amp; Fit"</span>, <span class="k">"type"</span>: <span class="s">"scale"</span>, <span class="k">"minLabel"</span>: <span class="s">"Small"</span>, <span class="k">"midLabel"</span>: <span class="s">"True to Size"</span>, <span class="k">"maxLabel"</span>: <span class="s">"Large"</span>, <span class="k">"average"</span>: 2.9 },
+    { <span class="k">"id"</span>: <span class="s">"comfort"</span>, <span class="k">"label"</span>: <span class="s">"Comfort"</span>, <span class="k">"type"</span>: <span class="s">"rating"</span>, <span class="k">"minLabel"</span>: <span class="s">"Poor"</span>, <span class="k">"maxLabel"</span>: <span class="s">"Excellent"</span>, <span class="k">"average"</span>: 4.6 }
+  ],
+  <span class="k">"summaryText"</span>: <span class="s">"Customers consistently praise the **quality** and **comfort**…"</span>
+}</code></pre>
+  <p>Dimension averages are on a 1–5 scale. For <code>type: "scale"</code> (for example fit), 3 is ideal and the marker sits at the midpoint. For <code>type: "rating"</code>, higher is better, so fill bars to <code>average / 5</code>. <code>summaryText</code> marks key themes with <code>**bold**</code>.</p>
+
+  <h2 id="list">Listing reviews</h2>
+  <p><code>GET /v1/products/{productId}/reviews</code> returns the <code>summary</code> plus a page of <code>reviews</code>, so one call can render the whole section.</p>
+  <table><tr><th>Query</th><th>Values</th></tr>
+    <tr><td><code>sort</code></td><td><code>newest</code> (default), <code>oldest</code>, <code>highest</code>, <code>lowest</code></td></tr>
+    <tr><td><code>rating</code></td><td>1–5, to show only that star level (for example when the 5★ bar is clicked)</td></tr>
+    <tr><td><code>limit</code> / <code>offset</code></td><td>Paging; limit max 50, default 10</td></tr></table>
+  <p>Each review has <code>id, rating, title, body, author, location, verifiedPurchase, dimensions, createdAt</code>.</p>
+
+  <h2 id="tiles">Stars on product tiles</h2>
+  <p><code>GET /v1/summaries?productIds=A,B,C</code> takes up to 50 IDs and returns <code>averageRating</code> and <code>totalReviews</code> for each. Use it on listing and search pages.</p>
+
+  <h2 id="form">Form config</h2>
+  <p><code>GET /v1/form-config</code> returns the dimension questions (labels, endpoint labels, required flags), the suggested topic chips, and the validation rules. Render the write-a-review form from this config, so a new brand only changes configuration, not code.</p>
+
+  <h2 id="submit">Submitting a review</h2>
+  <table><tr><th>Field</th><th>Rules</th></tr>
+    <tr><td><code>rating</code></td><td>Required, integer 1–5</td></tr>
+    <tr><td><code>title</code></td><td>Required, max 50 characters</td></tr>
+    <tr><td><code>body</code></td><td>Required, 50–2000 characters</td></tr>
+    <tr><td><code>author</code></td><td>Required display name, max 40 characters</td></tr>
+    <tr><td><code>location</code></td><td>Optional, max 40 characters</td></tr>
+    <tr><td><code>dimensions</code></td><td>Object of 1–5 integers. Required keys come from form-config (<code>fit</code> and <code>comfort</code> by default)</td></tr>
+    <tr><td><code>customerId</code></td><td>Optional; marks the review <code>verifiedPurchase</code></td></tr>
+    <tr><td><code>submissionId</code></td><td>Optional retry key; a repeat returns the original review with <code>"duplicate": true</code></td></tr></table>
+  <p>Returns <code>201</code> with the new <code>review</code> and the updated <code>summary</code>, so you can refresh the page without a second call. The review appears immediately.</p>
+
+  <h2 id="errors">Errors</h2>
+<pre><code>{ <span class="k">"error"</span>: { <span class="k">"code"</span>: <span class="s">"VALIDATION_FAILED"</span>, <span class="k">"message"</span>: <span class="s">"One or more fields are invalid"</span>,
+  <span class="k">"details"</span>: { <span class="k">"body"</span>: <span class="s">"body must be 50-2000 characters"</span>, <span class="k">"dimensions.fit"</span>: <span class="s">"fit is required (1-5)"</span> } } }</code></pre>
+  <table><tr><th>Status</th><th>Code</th><th>Meaning</th></tr>
+    <tr><td>400</td><td><code>BAD_REQUEST</code></td><td>Bad JSON or query parameter</td></tr>
+    <tr><td>401</td><td><code>UNAUTHORIZED</code></td><td>Bad or missing <code>x-api-key</code></td></tr>
+    <tr><td>422</td><td><code>VALIDATION_FAILED</code></td><td><code>details</code> maps each field to its message; show these inline on the form</td></tr>
+    <tr><td>503</td><td><code>SERVICE_UNAVAILABLE</code></td><td>Retry with backoff; hide the reviews block instead of breaking the page</td></tr></table>
+
+  <h2 id="commerce">B2C Commerce integration pattern</h2>
+  <ol>
+    <li><b>Service:</b> create an HTTP service <code>reviews.http</code> in Business Manager, with the API key in the service credential.</li>
+    <li><b>Custom SCAPI endpoints:</b> a <code>GET</code> that proxies summary and reviews for a product ID, and a <code>POST</code> that validates the shopper, sets <code>customerId</code>, and forwards the submission through <code>dw.svc.LocalServiceRegistry</code>.</li>
+    <li><b>Storefront Next:</b> the PDP loader streams the reviews call so the page renders without waiting for it. A write-a-review dialog posts through an action.</li>
+    <li><b>Optional:</b> award loyalty points per approved review (for example with the LoyaltyCo <code>earn</code> endpoint, using the review ID as <code>orderNo</code>).</li>
+  </ol>
+
+  <h2 id="agents">Building with an AI agent</h2>
+  <div class="agent">
+    <p style="margin-top:0">Point your coding agent at <a href="llms.txt">llms.txt</a> and <a href="openapi.json">openapi.json</a>:</p>
+<pre><code>Read https://lukejohnson-sf.github.io/ratings-reviews/llms.txt and the OpenAPI spec.
+Add a ratings &amp; reviews section to the Storefront Next PDP using a B2C Commerce
+custom SCAPI endpoint, plus a write-a-review dialog driven by /v1/form-config.</code></pre>
+  </div>
+
+  <h2 id="testing">Testing &amp; chaos</h2>
+  <p>Any product ID returns stable sample data: a star distribution plus 4 sample reviews. Simulate failures with <code>?chaos=slow</code> (adds 4 seconds), <code>?chaos=error</code> (returns 503) or <code>?chaos=flaky</code> (fails 50% of calls), or the <code>x-chaos</code> header. <code>POST /v1/reset</code> removes all submitted reviews.</p>
+</main>
+</div>
+</body>
+</html>

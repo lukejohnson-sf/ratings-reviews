@@ -1,0 +1,129 @@
+export const openapi = (server: string) => {
+  const error = {
+    type: 'object',
+    properties: { error: { type: 'object', properties: { code: { type: 'string' }, message: { type: 'string' }, details: { type: 'object', additionalProperties: { type: 'string' } } } } },
+  };
+  const review = {
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+      productId: { type: 'string' },
+      rating: { type: 'integer', minimum: 1, maximum: 5 },
+      title: { type: 'string' },
+      body: { type: 'string' },
+      author: { type: 'string' },
+      location: { type: 'string', nullable: true },
+      verifiedPurchase: { type: 'boolean' },
+      dimensions: { type: 'object', additionalProperties: { type: 'integer', minimum: 1, maximum: 5 }, example: { fit: 3, comfort: 5, quality: 5 } },
+      createdAt: { type: 'string', format: 'date-time' },
+      source: { type: 'string', enum: ['seed', 'submitted'] },
+    },
+  };
+  const summary = {
+    type: 'object',
+    properties: {
+      productId: { type: 'string' },
+      averageRating: { type: 'number', example: 4.7 },
+      totalReviews: { type: 'integer', example: 1284 },
+      recommendedPercent: { type: 'integer', example: 96 },
+      ratingDistribution: {
+        type: 'array',
+        items: { type: 'object', properties: { stars: { type: 'integer' }, count: { type: 'integer' }, percent: { type: 'integer' } } },
+      },
+      dimensions: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' }, label: { type: 'string' }, type: { type: 'string', enum: ['scale', 'rating'] },
+            minLabel: { type: 'string' }, midLabel: { type: 'string', nullable: true }, maxLabel: { type: 'string' },
+            average: { type: 'number', nullable: true, description: '1-5. For type=scale, 3 is ideal (e.g. true to size).' },
+          },
+        },
+      },
+      summaryText: { type: 'string', description: 'Review highlights. **bold** marks key themes.' },
+    },
+  };
+  const submit = {
+    type: 'object',
+    required: ['rating', 'title', 'body', 'author', 'dimensions'],
+    properties: {
+      rating: { type: 'integer', minimum: 1, maximum: 5 },
+      title: { type: 'string', maxLength: 50 },
+      body: { type: 'string', minLength: 50, maxLength: 2000 },
+      author: { type: 'string', maxLength: 40, description: 'Display name' },
+      location: { type: 'string', maxLength: 40 },
+      customerId: { type: 'string', description: 'Optional shopper ID; marks the review as a verified purchase' },
+      submissionId: { type: 'string', description: 'Optional idempotency key; a repeat returns the original review' },
+      dimensions: {
+        type: 'object',
+        description: 'Dimension ratings 1-5. Required dimensions are listed in GET /v1/form-config.',
+        properties: { fit: { type: 'integer', minimum: 1, maximum: 5 }, comfort: { type: 'integer', minimum: 1, maximum: 5 }, quality: { type: 'integer', minimum: 1, maximum: 5 } },
+      },
+    },
+    example: {
+      rating: 5, title: 'Love these! Cute and a deal', body: 'Great quality, good price for the set, and they still look new after many washes.',
+      author: 'Jennifer', location: 'Delaware', submissionId: 'basket-123-p1', dimensions: { fit: 3, comfort: 5, quality: 5 },
+    },
+  };
+  const ok = (schema: object, d = 'OK') => ({ description: d, content: { 'application/json': { schema } } });
+  const errs = { '401': ok(error, 'Invalid API key'), '503': ok(error, 'Chaos-mode outage') };
+  const pid = [{ name: 'productId', in: 'path', required: true, schema: { type: 'string' } }];
+
+  return {
+    openapi: '3.0.3',
+    info: {
+      title: 'Ratings & Reviews API',
+      version: '1.0.0',
+      description:
+        'Product ratings, star distributions, review dimensions and shopper-submitted reviews for commerce storefronts. Authenticate with the x-api-key header (server-to-server only). Sandbox: any productId returns stable sample data; ?chaos=slow|error|flaky simulates failures. Guides: https://lukejohnson-sf.github.io/ratings-reviews/',
+    },
+    servers: [{ url: server }],
+    components: {
+      securitySchemes: { apiKey: { type: 'apiKey', in: 'header', name: 'x-api-key' } },
+      schemas: { Review: review, Summary: summary, SubmitReview: submit, Error: error },
+    },
+    security: [{ apiKey: [] }],
+    paths: {
+      '/v1/products/{productId}/summary': {
+        get: { summary: 'Rating summary: average, star distribution, dimensions', parameters: pid, responses: { '200': ok(summary), ...errs } },
+      },
+      '/v1/products/{productId}/reviews': {
+        get: {
+          summary: 'List reviews with summary',
+          parameters: [
+            ...pid,
+            { name: 'sort', in: 'query', schema: { type: 'string', enum: ['newest', 'oldest', 'highest', 'lowest'], default: 'newest' } },
+            { name: 'rating', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 5 }, description: 'Only reviews with this star rating' },
+            { name: 'limit', in: 'query', schema: { type: 'integer', default: 10, maximum: 50 } },
+            { name: 'offset', in: 'query', schema: { type: 'integer', default: 0 } },
+          ],
+          responses: {
+            '200': ok({ type: 'object', properties: { productId: { type: 'string' }, summary, reviews: { type: 'array', items: review }, paging: { type: 'object' } } }),
+            ...errs,
+          },
+        },
+        post: {
+          summary: 'Submit a review',
+          parameters: pid,
+          requestBody: { required: true, content: { 'application/json': { schema: submit } } },
+          responses: {
+            '201': ok({ type: 'object', properties: { review, summary } }, 'Created; returns the review and updated summary'),
+            '200': ok({ type: 'object' }, 'Duplicate submissionId; returns the original review'),
+            '422': ok(error, 'VALIDATION_FAILED; details maps field to message'),
+            ...errs,
+          },
+        },
+      },
+      '/v1/summaries': {
+        get: {
+          summary: 'Batch star ratings for product tiles',
+          parameters: [{ name: 'productIds', in: 'query', required: true, schema: { type: 'string' }, description: 'Comma-separated, max 50' }],
+          responses: { '200': ok({ type: 'object' }), ...errs },
+        },
+      },
+      '/v1/form-config': { get: { summary: 'Write-a-review form config: dimensions, topics, validation rules', responses: { '200': ok({ type: 'object' }), ...errs } } },
+      '/v1/reset': { post: { summary: 'Reset sandbox data', responses: { '200': ok({ type: 'object' }), ...errs } } },
+    },
+  };
+};

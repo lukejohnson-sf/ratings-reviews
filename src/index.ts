@@ -106,7 +106,7 @@ async function handle(req: Request, ctx: Ctx): Promise<Response> {
     });
   }
 
-  if (path === '/' || path === '/health') return json({ status: 'ok', service: 'Ratings & Reviews', time: new Date().toISOString() });
+  if (path === '/' || path === '/health') return json({ status: 'ok', service: 'Rate Expectations', time: new Date().toISOString() });
   if (path === '/openapi.json') return json(openapi(url.origin));
 
   if (req.headers.get('x-api-key') !== ctx.env.API_KEY) return err(401, 'UNAUTHORIZED', 'Missing or invalid x-api-key header');

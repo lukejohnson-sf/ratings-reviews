@@ -73,10 +73,10 @@ export const openapi = (server: string) => {
   return {
     openapi: '3.0.3',
     info: {
-      title: 'Ratings & Reviews API',
+      title: 'Rate Expectations API',
       version: '1.0.0',
       description:
-        'Product ratings, star distributions, review dimensions and shopper-submitted reviews for commerce storefronts. Authenticate with the x-api-key header (server-to-server only). Sandbox: any productId returns stable sample data; ?chaos=slow|error|flaky simulates failures. Guides: https://lukejohnson-sf.github.io/ratings-reviews/',
+        'Rate Expectations: product ratings, star distributions, review dimensions and shopper-submitted reviews for commerce storefronts. Authenticate with the x-api-key header (server-to-server only). Sandbox: any productId returns stable sample data; ?chaos=slow|error|flaky simulates failures. Guides: https://lukejohnson-sf.github.io/ratings-reviews/',
     },
     servers: [{ url: server }],
     components: {

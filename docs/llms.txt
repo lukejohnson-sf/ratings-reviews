@@ -1,6 +1,6 @@
-# Ratings & Reviews API
+# Rate Expectations API
 
-> Product ratings, 5-to-1 star distributions, review dimensions (fit/comfort/quality) and shopper-submitted reviews, keyed by the merchant's own product IDs. JSON REST.
+> Rate Expectations is a ratings & reviews provider: product ratings, 5-to-1 star distributions, review dimensions (fit/comfort/quality) and shopper-submitted reviews, keyed by the merchant's own product IDs. JSON REST.
 
 Base URL: https://ratings-reviews.luke-johnson-c65.workers.dev
 Auth: header `x-api-key: <key>` on every /v1 request. Server-to-server only; never expose the key in a browser.

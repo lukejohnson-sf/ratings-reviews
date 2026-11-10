@@ -1,6 +1,6 @@
-# Ratings & Reviews (Cloudflare Worker `ratings-reviews`)
+# Rate Expectations (Cloudflare Worker `ratings-reviews`)
 
-A generic ratings and reviews provider for Storefront Next / SCAPI demos. It isn't tied to any brand: any product ID returns stable sample data.
+"Rate Expectations" is a fictional, generic ratings and reviews provider for Storefront Next / SCAPI demos. It isn't tied to any brand: any product ID returns stable sample data.
 
 - **Live API:** https://ratings-reviews.luke-johnson-c65.workers.dev
 - **Docs:** https://lukejohnson-sf.github.io/ratings-reviews/ (GitHub Pages from `/docs`)

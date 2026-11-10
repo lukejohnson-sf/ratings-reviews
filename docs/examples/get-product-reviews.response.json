@@ -1,0 +1,143 @@
+{
+  "productId": "P-1001",
+  "summary": {
+    "productId": "P-1001",
+    "averageRating": 4.6,
+    "totalReviews": 2696,
+    "recommendedPercent": 90,
+    "ratingDistribution": [
+      {
+        "stars": 5,
+        "count": 2024,
+        "percent": 75
+      },
+      {
+        "stars": 4,
+        "count": 403,
+        "percent": 15
+      },
+      {
+        "stars": 3,
+        "count": 162,
+        "percent": 6
+      },
+      {
+        "stars": 2,
+        "count": 59,
+        "percent": 2
+      },
+      {
+        "stars": 1,
+        "count": 48,
+        "percent": 2
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "fit",
+        "label": "Size & Fit",
+        "type": "scale",
+        "minLabel": "Small",
+        "midLabel": "True to Size",
+        "maxLabel": "Large",
+        "average": 3.2
+      },
+      {
+        "id": "comfort",
+        "label": "Comfort",
+        "type": "rating",
+        "minLabel": "Poor",
+        "midLabel": null,
+        "maxLabel": "Excellent",
+        "average": 4.4
+      },
+      {
+        "id": "quality",
+        "label": "Quality & Durability",
+        "type": "rating",
+        "minLabel": "Poor",
+        "midLabel": null,
+        "maxLabel": "Excellent",
+        "average": 4.7
+      }
+    ],
+    "summaryText": "Customers consistently praise the **quality** and **comfort**, and many say it is a great value for the price."
+  },
+  "reviews": [
+    {
+      "id": "seed-dfo-1",
+      "productId": "P-1001",
+      "rating": 5,
+      "title": "Exceeded my expectations",
+      "body": "The quality is outstanding for the price. I have already recommended it to friends and family.",
+      "author": "Priya",
+      "location": "California",
+      "verifiedPurchase": true,
+      "dimensions": {
+        "fit": 3,
+        "comfort": 5,
+        "quality": 5
+      },
+      "createdAt": "2026-11-03T00:00:00.000Z",
+      "source": "seed"
+    },
+    {
+      "id": "seed-dfo-2",
+      "productId": "P-1001",
+      "rating": 5,
+      "title": "Great value",
+      "body": "Great quality and a good price. Ordering a second one in another color.",
+      "author": "Abby",
+      "location": "Oregon",
+      "verifiedPurchase": true,
+      "dimensions": {
+        "fit": 3,
+        "comfort": 4,
+        "quality": 5
+      },
+      "createdAt": "2026-10-24T00:00:00.000Z",
+      "source": "seed"
+    },
+    {
+      "id": "seed-dfo-3",
+      "productId": "P-1001",
+      "rating": 4,
+      "title": "Solid choice",
+      "body": "Does exactly what I needed and feels sturdy. Only wish there were more color options.",
+      "author": "Sofia",
+      "location": "Florida",
+      "verifiedPurchase": true,
+      "dimensions": {
+        "fit": 3,
+        "comfort": 4,
+        "quality": 4
+      },
+      "createdAt": "2026-10-17T00:00:00.000Z",
+      "source": "seed"
+    },
+    {
+      "id": "seed-dfo-4",
+      "productId": "P-1001",
+      "rating": 3,
+      "title": "Runs large",
+      "body": "Decent quality but it runs large, so I had to exchange for a smaller size.",
+      "author": "Daniel",
+      "location": "Colorado",
+      "verifiedPurchase": true,
+      "dimensions": {
+        "fit": 5,
+        "comfort": 3,
+        "quality": 3
+      },
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "source": "seed"
+    }
+  ],
+  "paging": {
+    "sort": "newest",
+    "limit": 10,
+    "offset": 0,
+    "returned": 4,
+    "totalAvailable": 4
+  }
+}

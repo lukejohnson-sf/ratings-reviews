@@ -1,0 +1,82 @@
+{
+  "review": {
+    "id": "rv-hjxnj0",
+    "productId": "EXAMPLE-SUBMIT",
+    "rating": 5,
+    "title": "Love these! Cute and a deal",
+    "body": "Great quality, good price for the set, and they still look new after many washes.",
+    "author": "Jennifer",
+    "location": "Delaware",
+    "verifiedPurchase": false,
+    "dimensions": {
+      "fit": 3,
+      "comfort": 5,
+      "quality": 5
+    },
+    "createdAt": "2026-11-10T14:27:45.842Z",
+    "source": "submitted"
+  },
+  "summary": {
+    "productId": "EXAMPLE-SUBMIT",
+    "averageRating": 4.9,
+    "totalReviews": 1619,
+    "recommendedPercent": 97,
+    "ratingDistribution": [
+      {
+        "stars": 5,
+        "count": 1470,
+        "percent": 91
+      },
+      {
+        "stars": 4,
+        "count": 97,
+        "percent": 6
+      },
+      {
+        "stars": 3,
+        "count": 31,
+        "percent": 2
+      },
+      {
+        "stars": 2,
+        "count": 11,
+        "percent": 1
+      },
+      {
+        "stars": 1,
+        "count": 10,
+        "percent": 1
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "fit",
+        "label": "Size & Fit",
+        "type": "scale",
+        "minLabel": "Small",
+        "midLabel": "True to Size",
+        "maxLabel": "Large",
+        "average": 2.9
+      },
+      {
+        "id": "comfort",
+        "label": "Comfort",
+        "type": "rating",
+        "minLabel": "Poor",
+        "midLabel": null,
+        "maxLabel": "Excellent",
+        "average": 4.6
+      },
+      {
+        "id": "quality",
+        "label": "Quality & Durability",
+        "type": "rating",
+        "minLabel": "Poor",
+        "midLabel": null,
+        "maxLabel": "Excellent",
+        "average": 4.2
+      }
+    ],
+    "summaryText": "Customers consistently praise the **quality** and **comfort**, and many say it is a great value for the price."
+  }
+}

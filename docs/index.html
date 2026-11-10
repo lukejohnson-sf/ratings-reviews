@@ -146,7 +146,7 @@ curl -X POST $BASE/v1/products/P-1001/reviews -H "x-api-key: $KEY" -H 'content-t
     <li><b>Service:</b> create an HTTP service <code>reviews.http</code> in Business Manager, with the API key in the service credential.</li>
     <li><b>Custom SCAPI endpoints:</b> a <code>GET</code> that proxies summary and reviews for a product ID, and a <code>POST</code> that validates the shopper, sets <code>customerId</code>, and forwards the submission through <code>dw.svc.LocalServiceRegistry</code>.</li>
     <li><b>Storefront Next:</b> the PDP loader streams the reviews call so the page renders without waiting for it. A write-a-review dialog posts through an action.</li>
-    <li><b>Optional:</b> award loyalty points per approved review (for example with the LoyaltyCo <code>earn</code> endpoint, using the review ID as <code>orderNo</code>).</li>
+    <li><b>Optional:</b> award loyalty points per approved review (for example with the Perks &amp; Recreation <code>earn</code> endpoint, using the review ID as <code>orderNo</code>).</li>
   </ol>
 
   <h2 id="agents">Building with an AI agent</h2>
